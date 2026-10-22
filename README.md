@@ -58,7 +58,7 @@ This is a new synthetic implementation. It does not inherit any previous accurac
 ## Signal model
 
 - Symbols are complex baseband points normalized to unit average power.
-- Each signal has 128 symbols with 8 samples per symbol (simple zero-order-hold oversampling).
+- Each signal has 128 symbols with 8 samples per symbol at a 1 kHz configured symbol rate (8 ksample/s, simple zero-order-hold oversampling).
 - A random global phase, uniform in `[0, 2π)`, is applied to the whole signal.
 - Complex AWGN is added after the phase rotation.
 - No frequency offset, multipath, fading, timing error or IQ imbalance in the MVP.

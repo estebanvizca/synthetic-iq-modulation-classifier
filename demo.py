@@ -57,16 +57,19 @@ def _plot_signal(
     snr_db: float,
     true_modulation: str,
     prediction: dict,
+    symbol_rate_hz: float,
+    samples_per_symbol: int,
     output_path: Path,
 ) -> Path:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     figure, axes = plt.subplots(1, 2, figsize=(11, 4.6))
 
-    time_axis = np.arange(iq.size)
-    axes[0].plot(time_axis, iq.real, linewidth=0.8, label="I")
-    axes[0].plot(time_axis, iq.imag, linewidth=0.8, alpha=0.75, label="Q")
+    sample_rate_hz = float(symbol_rate_hz) * int(samples_per_symbol)
+    time_axis_ms = np.arange(iq.size) * 1000.0 / sample_rate_hz
+    axes[0].plot(time_axis_ms, iq.real, linewidth=0.8, label="I")
+    axes[0].plot(time_axis_ms, iq.imag, linewidth=0.8, alpha=0.75, label="Q")
     axes[0].set_title("Simulated time-domain I/Q")
-    axes[0].set_xlabel("sample")
+    axes[0].set_xlabel("time (ms)")
     axes[0].set_ylabel("amplitude")
     axes[0].grid(True, alpha=0.25)
     axes[0].legend(loc="upper right", fontsize=8)
@@ -152,6 +155,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         snr_db=float(args.snr),
         true_modulation=true_modulation,
         prediction=result,
+        symbol_rate_hz=float(config["signal"]["symbol_rate_hz"]),
+        samples_per_symbol=int(config["samples_per_symbol"]),
         output_path=output_path,
     )
     print(f"\nSaved figure: {saved}")
