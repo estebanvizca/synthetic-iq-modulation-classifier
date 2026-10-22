@@ -1,0 +1,39 @@
+# Synthetic I/Q modulation classification configuration.
+# All signals are simulated; no SDR hardware is involved.
+
+seed: 42
+
+signal:
+  modulations: [bpsk, qpsk, 8psk]
+  symbols: 128
+  samples_per_symbol: 8
+  symbol_rate_hz: 1000
+  normalize_average_power: true
+
+channel:
+  random_phase: true          # uniform global phase in [0, 2*pi)
+  frequency_offset_hz: 0      # not modeled in the MVP
+  awgn: true
+
+dataset:
+  signals_per_class_per_snr: 500
+  snr_db: [-5, 0, 5, 10, 15, 20]
+  splits:
+    train: 0.70
+    validation: 0.15
+    test: 0.15
+  # Independent seeds per partition. The per-signal seed is derived from the
+  # partition seed and the class/SNR/index coordinates.
+  split_seeds:
+    train: 1042
+    validation: 2042
+    test: 3042
+
+features:
+  phase_histogram_bins: 16
+
+model:
+  type: random_forest
+  n_estimators: 300
+  random_state: 42
+  n_jobs: -1

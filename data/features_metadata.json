@@ -1,0 +1,128 @@
+{
+  "channel": {
+    "awgn": true,
+    "frequency_offset_hz": 0.0,
+    "random_phase": true,
+    "snr_definition": "signal power / total complex noise power per window"
+  },
+  "corpus": "synthetic",
+  "counts": {
+    "modulation": {
+      "8psk": 3000,
+      "bpsk": 3000,
+      "qpsk": 3000
+    },
+    "snr_db": {
+      "-5.0": 1500,
+      "0.0": 1500,
+      "10.0": 1500,
+      "15.0": 1500,
+      "20.0": 1500,
+      "5.0": 1500
+    },
+    "split": {
+      "test": 1350,
+      "train": 6300,
+      "validation": 1350
+    }
+  },
+  "dataset": {
+    "signals_per_class_per_snr": 500,
+    "snr_db": [
+      -5.0,
+      0.0,
+      5.0,
+      10.0,
+      15.0,
+      20.0
+    ],
+    "split_counts": {
+      "test": 75,
+      "train": 350,
+      "validation": 75
+    },
+    "split_seeds": {
+      "test": 3042,
+      "train": 1042,
+      "validation": 2042
+    },
+    "splits": {
+      "test": 0.15,
+      "train": 0.7,
+      "validation": 0.15
+    }
+  },
+  "features": {
+    "block_features": "coherent mean over known oversampling blocks",
+    "carrier_recovery": false,
+    "frequency_offset_removed": false,
+    "names": [
+      "mag_mean",
+      "mag_std",
+      "mag_skew",
+      "mag_kurtosis",
+      "phase_diff_mean",
+      "phase_diff_std",
+      "phase_hist_00",
+      "phase_hist_01",
+      "phase_hist_02",
+      "phase_hist_03",
+      "phase_hist_04",
+      "phase_hist_05",
+      "phase_hist_06",
+      "phase_hist_07",
+      "phase_hist_08",
+      "phase_hist_09",
+      "phase_hist_10",
+      "phase_hist_11",
+      "phase_hist_12",
+      "phase_hist_13",
+      "phase_hist_14",
+      "phase_hist_15",
+      "block_mag_mean",
+      "block_mag_std",
+      "block_mag_skew",
+      "block_mag_kurtosis",
+      "block_phase_diff_mean",
+      "block_phase_diff_std",
+      "block_phase_hist_00",
+      "block_phase_hist_01",
+      "block_phase_hist_02",
+      "block_phase_hist_03",
+      "block_phase_hist_04",
+      "block_phase_hist_05",
+      "block_phase_hist_06",
+      "block_phase_hist_07",
+      "block_phase_hist_08",
+      "block_phase_hist_09",
+      "block_phase_hist_10",
+      "block_phase_hist_11",
+      "block_phase_hist_12",
+      "block_phase_hist_13",
+      "block_phase_hist_14",
+      "block_phase_hist_15"
+    ],
+    "phase_histogram_bins": 16,
+    "samples_per_symbol": 8,
+    "synchronized_constellation": false
+  },
+  "features_sha256": "d67ae9187fc1edbe14f39c9227b748200c2dde21ef48a622ba9c2c32f853f608",
+  "rows": 9000,
+  "sample_rows": 108,
+  "sample_sha256": "5c4777e03f3c22022209c835fb1e1f376f96e4175b12bdbb7a8c769d89c8bf7e",
+  "seed": 42,
+  "signal": {
+    "modulations": [
+      "bpsk",
+      "qpsk",
+      "8psk"
+    ],
+    "normalize_average_power": true,
+    "samples_per_symbol": 8,
+    "symbol_rate_hz": 1000.0,
+    "symbols": 128
+  },
+  "unique_scenarios": 9000,
+  "unique_seeds": 9000,
+  "warning": "Every waveform and feature row is simulated. No SDR, RF capture, hardware or real radio measurement is involved."
+}
