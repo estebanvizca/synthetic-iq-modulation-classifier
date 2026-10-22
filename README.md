@@ -84,7 +84,7 @@ The default split is by independent scenario seeds, not by individual feature ro
 | validation | 75 | 1,350 | diagnostics only |
 | test | 75 | 1,350 | final held-out evaluation |
 
-Each split has its own master seed (`1042`, `2042`, `3042`). Every scenario derives a distinct signal seed from the split seed, class, SNR and index. The validator rejects duplicate scenarios, duplicate seeds, missing labels and any seed or scenario overlap between train, validation and test. The full feature table is committed at [`data/features.csv`](data/features.csv); the 108-row inspection sample is at [`data/sample_features.csv`](data/sample_features.csv). Raw I/Q arrays are not committed; each row contains the parameters and seed needed to regenerate its waveform with `generate_scenario`.
+Each split has its own master seed (`1042`, `2042`, `3042`). Every scenario derives a distinct signal seed from the split seed, class, SNR and index. The validator rejects duplicate scenarios, duplicate seeds, missing labels and any seed or scenario overlap between train, validation and test. The full feature table is committed at [`data/features.csv`](data/features.csv); the 108-row inspection sample is at [`data/sample_features.csv`](data/sample_features.csv). Raw I/Q arrays are not committed. Each row stores its signal parameters and seed; `generate_scenario` regenerates the same waveform from the configuration and the row's split, modulation, SNR and index coordinates.
 
 `data/features_metadata.json` records the generator configuration, counts, feature names, split seeds and SHA-256 of the committed feature and sample files. The dataset-generation step is deterministic: the same configuration produces byte-identical CSV output.
 
@@ -107,10 +107,10 @@ The feature order is stable and stored in the model artifact. The same extractor
 - 300 trees, `class_weight="balanced"`, fixed random state.
 - Fit on the train partition only.
 - Validation is reported separately and never included in fitting.
-- The test partition is evaluated once by `evaluate.py` and is not used for feature or hyperparameter selection.
+- The test partition is reserved for the final held-out evaluation and is not used by `train.py` or for feature or hyperparameter selection.
 - The majority-class baseline is computed from the train partition.
 
-The committed model under `models/` and generated reports under `reports/` are local artifacts and are gitignored; `data/features.csv` is committed so a clean clone can train without regenerating the corpus.
+The trained model under `models/` is a local artifact and is gitignored. The measured reports under `reports/` are committed for inspection, and `data/features.csv` is committed so a clean clone can train without regenerating the corpus.
 
 ## Reproduction
 
@@ -135,7 +135,7 @@ PYTHONPATH=src python demo.py --snr 10 --modulation qpsk --seed 2026
 
 The demo generates a new signal at runtime, prints the feature values, predicted class and probabilities, and saves `outputs/demo_constellation.png` by default. It requires a trained model; run `train` first if `models/iq_random_forest.joblib` is absent. The figure is explicitly labelled synthetic.
 
-To regenerate a waveform from a committed row, use the row's `seed` and the configuration with `generate_scenario`. The raw I/Q array is returned by that function and is not stored in the CSV.
+To regenerate a waveform from a committed row, call `generate_scenario` with the configuration and the row's `split`, `modulation`, `snr_db` and index. The stored `seed` lets you verify that the same scenario was reconstructed. The raw I/Q array is returned by that function and is not stored in the CSV.
 
 ## Demo figure
 
